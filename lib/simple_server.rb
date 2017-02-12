@@ -6,16 +6,16 @@ client = tcp_server.accept
 puts "ready for a request"
 
 request_lines = []
+
 while line = client.gets and !line.chomp.empty?
   request_lines << line.chomp
 end
 
-
-puts "Got this request:"
+puts "I (the server) just got this request:"
 puts request_lines.inspect
 
 
-puts "Sending response."
+puts "I (the server) am sending response."
 response = "<pre>" + request_lines.join("\n") + "</pre>"
 output = "<html><head></head><body>#{response}</body></html>"
 headers = ["http/1.1 200 ok",
