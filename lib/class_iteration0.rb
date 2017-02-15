@@ -19,48 +19,46 @@ class HTTP
       while line = client.gets and !line.chomp.empty?
         client_response << line = line.chomp
       end
+      path = client_response[0].split[1]
 
-      path = client_response[0].split()[1]
-      header = "HTTP/1.1 200 OK"
-      server = "Josh's ugly little server"
-      date = Time.now.strftime("%Y-%B-%d, %l:%M %P")
-      content_type = "text/html; charset=UTF-8"
-      content_length = helloworld_path.join.length
-      connection = "close"
-
-      header_block = <<END
-  #{header}
-  server: #{server}
-  date: #{date}
-  content-type: #{content_type}
-  content-length: #{content_length}
-  connection: #{connection}
-  \r\n\r\n
-END
-
-      helloworld_path = ["<html><head></head><body>" +
-        "hello world, this has been reloaded #{counter} times." +
-        "</body></html>"]
-
-      @counter += 1
-
-      default_path = ["<html><head></head><body>\r\n" +
-        "<pre>#{client_response.join("\n")}</pre>\r\n" +
-        "this server has been (re)started #{counter} times\r\n" +
-        "</body></html>\n"
-      ]
-
-      client.puts header_block
-
-
+      time = Time.now.strftime("%Y %B %d, %H:%M %z")
+      # possible responses based on path
+      hello_path = ["hello world, this has been reloaded #{counter} times."]
+      default_path = ["<pre>#{Time.now}\nThis is my default path</pre>\r\n"]
+      datetime_path = ["<pre>The time is #{time}</pre>"]
+      shutdown_path = ["Total requests: #{counter}\nExiting..."]
 
       if path == "/"
-        client.puts default_path
-      elsif path == "/helloworld"
-        client.puts helloworld_path
+        response = default_path
+      elsif path == "/hello"
+        response = hello_path
+      elsif path == "/datetime"
+        response = datetime_path
+      elsif path == "/shutdown"
+        response = shutdown_path
       end
 
+      output = "<html><head></head><body>#{response.join}</body></html>"
+
+      headers = ["http/1.1 200 ok",
+                "date: #{time}",
+                "server: ruby",
+                "content-type: text/html; charset=iso-8859-1",
+                "content-length: #{output.length + 1}\r\n\r\n"].join("\r\n")
+
+      @counter += 1
+      client.puts headers
+      client.puts output
+      client.close
+
+      client.exit if path == "/shutdown"
+      # resetting values for next connection
+      response = nil
+      path = nil
+      client_response = []
     end
+
+
   end
 end
 
