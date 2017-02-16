@@ -20,6 +20,7 @@ class HTTP
         client_response << line = line.chomp
       end
       path = client_response[0].split[1]
+      word_search = path.split("=")[1]
 
       time = Time.now.strftime("%Y %B %d, %H:%M %z")
       # possible responses based on path
@@ -27,7 +28,10 @@ class HTTP
       default_path = ["<pre>#{Time.now}\nThis is my default path</pre>\r\n"]
       datetime_path = ["<pre>The time is #{time}</pre>"]
       shutdown_path = ["Total requests: #{counter}\nExiting..."]
+      word_search_found_path = ["your word '#{word_search}' was found"]
+      word_search_not_found_path = ["your word '#{word_search}' was NOT found"]
 
+      # path parsing
       if path == "/"
         response = default_path
       elsif path == "/hello"
@@ -36,7 +40,19 @@ class HTTP
         response = datetime_path
       elsif path == "/shutdown"
         response = shutdown_path
+
+      # should return true to localhost:9090/word_search?word=house
+      elsif path.include?("/word_search")
+        dict = File.open("/usr/share/dict/words", "r").read.split("\n")
+          if dict.include?(word_search)
+            response = word_search_found_path
+          elsif !dict.include?(word_search)
+            response = word_search_not_found_path
+          end
+      else
+        response = default_path
       end
+
 
       output = "<html><head></head><body>#{response.join}</body></html>"
 
