@@ -17,8 +17,12 @@ class HTTP
       while line = client.gets and !line.chomp.empty?
         client_response << line = line.chomp
       end
+
+
+      method = client_response[0].split.first
       path = client_response[0].split[1]
       word_search = path.split("=")[1]
+      game_guess_numer = client_response.find()
 
       time = Time.now.strftime("%Y %B %d, %H:%M %z")
 
@@ -28,7 +32,12 @@ class HTTP
       shutdown_path = ["Total requests: #{counter}\nExiting..."]
       word_search_found_path = ["your word '#{word_search}' was found"]
       word_search_not_found_path = ["your word '#{word_search}' was NOT found"]
+      start_game_path = ["Good luck"]
 
+
+
+
+      binding.pry
       if path == "/"
         response = default_path
       elsif path == "/hello"
@@ -37,7 +46,6 @@ class HTTP
         response = datetime_path
       elsif path == "/shutdown"
         response = shutdown_path
-
       elsif path.include?("/word_search")
         dict = File.open("/usr/share/dict/words", "r").read.split("\n")
           if dict.include?(word_search)
@@ -45,6 +53,8 @@ class HTTP
           elsif !dict.include?(word_search)
             response = word_search_not_found_path
           end
+      elsif path == "/start_game" && method == "POST"
+         response = start_game_path
       else
         response = default_path
       end
@@ -64,6 +74,7 @@ class HTTP
       client.close
 
       client.exit if path == "/shutdown"
+      # client.close if path =="/start_game" && method == "POST"
 
       response = nil
       path = nil
