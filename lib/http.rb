@@ -6,7 +6,7 @@ class HTTP
   attr_accessor :counter
 
   def initialize
-    @server = TCPServer.new(9090)
+    @server = TCPServer.new(9292)
     @counter = 0
   end
   puts "server's up, capiTAN"

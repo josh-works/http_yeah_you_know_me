@@ -17,5 +17,5 @@ This is our first foray into talking to other machines, as module 1 backend stud
 word search string format:
 
 ```
-localhost:9090/word_search?word=house
+localhost:9292/word_search?word=house
 ```
