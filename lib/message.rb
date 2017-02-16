@@ -1,17 +1,16 @@
-require 'socket'
+require 'pry'
 
-class HTTP
-  attr_reader :server
+class Message
   attr_accessor :counter
 
   def initialize
-    @server = TCPServer.new(9090)
-    @counter = 0
-  end
-  puts "server's up, capiTAN"
 
-  def send_message
+  end
+
+  def self.send_message(server)
     client_response = []
+    counter = 0
+
     while client = server.accept
       while line = client.gets and !line.chomp.empty?
         client_response << line = line.chomp
@@ -56,8 +55,7 @@ class HTTP
                 "server: ruby",
                 "content-type: text/html; charset=iso-8859-1",
                 "content-length: #{output.length + 1}\r\n\r\n"].join("\r\n")
-
-      @counter += 1
+      counter += 1
       client.puts headers
       client.puts output
       client.close
@@ -68,10 +66,5 @@ class HTTP
       path = nil
       client_response = []
     end
-
-
   end
 end
-
-my_server = HTTP.new
-my_server.send_message
