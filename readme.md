@@ -19,3 +19,10 @@ word search string format:
 ```
 localhost:9292/word_search?word=house
 ```
+
+## Self-assessment against rubric:
+
+1. Fundamental Ruby syntax and style: 2
+2. Encapsulation/breaking into components: 1
+3. TDD: 1
+4. Functional expectations: 2
