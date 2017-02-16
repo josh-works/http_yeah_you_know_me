@@ -4,7 +4,14 @@ This is our first foray into talking to other machines, as module 1 backend stud
 
 - [Project spec](http://backend.turing.io/module1/projects/http_yeah_you_know_me)
 
-- [notes from first run through HTTP server](https://gist.github.com/josh-works/59b17f5aa8d3ab7ac899c7a4a2fae92d)
+## My learnings
+
+- [notes from first run through HTTP server. It's very long, I tried hard to understand the response cycle.](https://gist.github.com/josh-works/59b17f5aa8d3ab7ac899c7a4a2fae92d)
+- I finally understand the request/response cycle between server and client.
+- I used netcat, curl, postman, and my browser to "grok" the HTTP stuff.
+- I understand the basics, but I felt clueless in terms of Faraday, and testing this reliably.
+- the program is untested, and the methods are horribly long.
+
 
 
 word search string format:

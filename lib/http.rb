@@ -1,3 +1,4 @@
+require 'pry'
 require 'socket'
 
 class HTTP
@@ -22,7 +23,7 @@ class HTTP
       time = Time.now.strftime("%Y %B %d, %H:%M %z")
 
       hello_path = ["hello world, this has been reloaded #{counter} times."]
-      default_path = ["<pre>#{Time.now}\nThis is my default path</pre>\r\n"]
+      default_path = ["<pre>#{Time.now}\nThis is my default path\n#{client_response.join("\n")}</pre>\r\n"]
       datetime_path = ["<pre>The time is #{time}</pre>"]
       shutdown_path = ["Total requests: #{counter}\nExiting..."]
       word_search_found_path = ["your word '#{word_search}' was found"]
