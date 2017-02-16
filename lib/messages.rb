@@ -6,10 +6,10 @@ class Messages
     @client_response = []
     @counter = 0
   end
-  binding.pry
   def self.get_client_request(server)
     client_response = []
-    while client = server.accept
+    client_running = true
+    while client_running
       while line = client.gets and !line.chomp.empty?
         client_response << line = line.chomp
       end
