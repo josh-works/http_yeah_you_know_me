@@ -1,4 +1,3 @@
-require 'pry'
 require 'socket'
 
 class HTTP
@@ -9,8 +8,6 @@ class HTTP
     @server = TCPServer.new(9090)
     @counter = 0
   end
-
-  # note to myself in terminal when this gets hit.
   puts "server's up, capiTAN"
 
   def send_message
@@ -23,7 +20,7 @@ class HTTP
       word_search = path.split("=")[1]
 
       time = Time.now.strftime("%Y %B %d, %H:%M %z")
-      # possible responses based on path
+
       hello_path = ["hello world, this has been reloaded #{counter} times."]
       default_path = ["<pre>#{Time.now}\nThis is my default path</pre>\r\n"]
       datetime_path = ["<pre>The time is #{time}</pre>"]
@@ -31,7 +28,6 @@ class HTTP
       word_search_found_path = ["your word '#{word_search}' was found"]
       word_search_not_found_path = ["your word '#{word_search}' was NOT found"]
 
-      # path parsing
       if path == "/"
         response = default_path
       elsif path == "/hello"
@@ -41,7 +37,6 @@ class HTTP
       elsif path == "/shutdown"
         response = shutdown_path
 
-      # should return true to localhost:9090/word_search?word=house
       elsif path.include?("/word_search")
         dict = File.open("/usr/share/dict/words", "r").read.split("\n")
           if dict.include?(word_search)
@@ -68,7 +63,7 @@ class HTTP
       client.close
 
       client.exit if path == "/shutdown"
-      # resetting values for next connection
+
       response = nil
       path = nil
       client_response = []
